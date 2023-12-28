@@ -1,0 +1,44 @@
+using System.IO;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class SaveLoadScene : MonoBehaviour
+{
+    private const string saveFileName = "savedScene.txt";
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            SaveScene();
+        }
+
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            LoadScene();
+        }
+    }
+
+    void SaveScene()
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+        string savePath = Path.Combine(Application.persistentDataPath, saveFileName);
+        File.WriteAllText(savePath, sceneName);
+        Debug.Log("Scena zapisana: " + sceneName);
+    }
+
+    void LoadScene()
+    {
+        string savePath = Path.Combine(Application.persistentDataPath, saveFileName);
+        if (File.Exists(savePath))
+        {
+            string sceneName = File.ReadAllText(savePath);
+            SceneManager.LoadScene(sceneName);
+            Debug.Log("Scena wczytana: " + sceneName);
+        }
+        else
+        {
+            Debug.Log("Brak zapisanej sceny.");
+        }
+    }
+}
